@@ -1,0 +1,8 @@
+pydantic_settings==2.1.0
+pydantic==2.5.3
+loguru==0.7.2
+sqlalchemy==2.0.23
+aiogram==3.2.0
+alembic==1.13.1
+asyncpg==0.29.0
+redis==5.0.1

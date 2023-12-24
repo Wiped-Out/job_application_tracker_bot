@@ -1,0 +1,77 @@
+version: '3.8'
+
+x-pg-cred: &pg-cred
+  POSTGRES_DB: ${POSTGRES_DB}
+  POSTGRES_USER: ${POSTGRES_USER}
+  POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+  POSTGRES_HOST: ${POSTGRES_HOST}
+  POSTGRES_PORT: ${POSTGRES_PORT}
+
+
+x-redis-cred: &redis-cred
+  REDIS_HOST: ${REDIS_HOST}
+  REDIS_PORT: ${REDIS_PORT}
+
+
+x-bot-cred: &bot-cred
+  BOT_TOKEN: ${BOT_TOKEN}
+
+
+services:
+  postgres:
+    container_name: JAT_postgres
+    image: postgres:14.3
+    environment:
+      TZ: "Europe/Moscow"
+      <<: *pg-cred
+    volumes:
+      - JAT_postgres:/var/lib/postgresql/data
+    restart: on-failure
+    ports:
+      - "5555:5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U $POSTGRES_USER -d $POSTGRES_DB" ]
+      interval: 3s
+      timeout: 5s
+      retries: 3
+
+    networks: [ local_JAT ]
+
+  bot:
+    container_name: JAT_bot
+    build:
+      context: ./../../
+      dockerfile: ./docker/local/Dockerfile
+    environment:
+      <<: [ *bot-cred, *pg-cred, *redis-cred ]
+    restart: unless-stopped
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+    networks: [ local_JAT ]
+
+  redis:
+    container_name: JAT_redis
+    image: redis:7.0
+    environment: *redis-cred
+    volumes:
+      - JAT_redis:/data
+    restart: on-failure
+    healthcheck:
+      test: [ "CMD", "redis-cli" ]
+      interval: 3s
+      timeout: 5s
+      retries: 3
+    networks: [ local_JAT ]
+
+volumes:
+  JAT_postgres:
+  JAT_redis:
+
+networks:
+  local_JAT:
+    driver: bridge
