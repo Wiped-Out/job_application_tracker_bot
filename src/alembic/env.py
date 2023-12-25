@@ -8,6 +8,7 @@ from sqlalchemy.ext.asyncio import async_engine_from_config
 from alembic import context
 from core.postgres_settings import postgres_settings
 from db.postgres import ModelBase
+from modules.applications.models.application import ApplicationModel
 from modules.users.models.user import UserModel  # noqa: F401
 
 # this is the Alembic Config object, which provides

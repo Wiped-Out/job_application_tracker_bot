@@ -9,3 +9,26 @@ main_menu_kb = ReplyKeyboardMarkup(
     ],
     resize_keyboard=True,
 )
+
+back_kb = ReplyKeyboardMarkup(
+    keyboard=[
+        [KeyboardButton(text=buttons.back)],
+    ],
+    resize_keyboard=True,
+)
+
+back_and_skip_kb = ReplyKeyboardMarkup(
+    keyboard=[
+        [KeyboardButton(text=buttons.skip)],
+        [KeyboardButton(text=buttons.back)],
+    ],
+    resize_keyboard=True,
+)
+
+back_and_today_kb = ReplyKeyboardMarkup(
+    keyboard=[
+        [KeyboardButton(text=buttons.today)],
+        [KeyboardButton(text=buttons.back)],
+    ],
+    resize_keyboard=True,
+)
