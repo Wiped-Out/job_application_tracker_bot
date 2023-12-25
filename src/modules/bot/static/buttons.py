@@ -1,2 +1,5 @@
 new_application = '➕ Add application'
 my_applications = '📑 My applications'
+back = '⬅️ Back'
+skip = 'Skip ➡️'
+today = 'Today'

@@ -1,7 +1,8 @@
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
 
-from modules.bot.keyboards.keyboards import main_menu_kb
+from modules.bot.keyboards import keyboards
+from modules.bot.states.add_application import AddApplication
 from modules.bot.states.main_menu import MainMenu
 from modules.bot.static import messages
 
@@ -23,5 +24,91 @@ async def switch_to_main_menu(
     await state.set_state(MainMenu.main_menu)
     await message.answer(
         text=messages.START_MESSAGE if is_from_start_menu else messages.MAIN_MENU,
-        reply_markup=main_menu_kb,
+        reply_markup=keyboards.main_menu_kb,
+    )
+
+
+async def switch_to_sending_job_position_menu(message: Message, state: FSMContext):
+    """
+    Switch user to sending job position.
+
+    :param message: Message from user
+    :param state: FSM
+    """
+    await state.set_state(AddApplication.job_position)
+    await message.answer(text=messages.SEND_JOB_POSITION, reply_markup=keyboards.back_kb)
+
+
+async def switch_to_sending_vacancy_url_menu(message: Message, state: FSMContext):
+    """
+    Switch user to sending vacancy url.
+
+    :param message: Message from user
+    :param state: FSM
+    """
+    await state.set_state(AddApplication.vacancy_url)
+    await message.answer(text=messages.SEND_VACANCY_URL, reply_markup=keyboards.back_and_skip_kb)
+
+
+async def switch_to_sending_company_name_menu(message: Message, state: FSMContext):
+    """
+    Switch user to sending company name.
+
+    :param message: Message from user
+    :param state: FSM
+    """
+    await state.set_state(AddApplication.company_name)
+    await message.answer(text=messages.SEND_COMPANY_NAME, reply_markup=keyboards.back_kb)
+
+
+async def switch_to_sending_salary_menu(message: Message, state: FSMContext):
+    """
+    Switch user to sending salry.
+
+    :param message: Message from user
+    :param state: FSM
+    """
+    await state.set_state(AddApplication.salary)
+    await message.answer(text=messages.SEND_SALARY, reply_markup=keyboards.back_and_skip_kb)
+
+
+async def switch_to_send_job_description_menu(message: Message, state: FSMContext):
+    """
+    Switch user to sending job description.
+
+    :param message: Message from user
+    :param state: FSM
+    """
+    await state.set_state(AddApplication.job_description)
+    await message.answer(
+        text=messages.SEND_JOB_DESCRIPTION,
+        reply_markup=keyboards.back_and_skip_kb,
+    )
+
+
+async def switch_to_send_contacts_menu(message: Message, state: FSMContext):
+    """
+    Switch user to sending contacts.
+
+    :param message: Message from user
+    :param state: FSM
+    """
+    await state.set_state(AddApplication.contacts)
+    await message.answer(
+        text=messages.SEND_CONTACTS,
+        reply_markup=keyboards.back_and_skip_kb,
+    )
+
+
+async def switch_to_send_applied_date_menu(message: Message, state: FSMContext):
+    """
+    Switch user to sending applied date.
+
+    :param message: Message from user
+    :param state: FSM
+    """
+    await state.set_state(AddApplication.applied_date)
+    await message.answer(
+        text=messages.SEND_APPLIED_DATE,
+        reply_markup=keyboards.back_and_today_kb,
     )
