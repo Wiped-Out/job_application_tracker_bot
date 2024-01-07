@@ -226,7 +226,7 @@ async def skip_entering_contacts(message: Message, state: FSMContext):
     :param state: FSM
     """
     await state.update_data(contacts=None)
-    await switchers.switch_to_send_applied_date_menu(message=message, state=state)
+    await switchers.switch_to_send_location_menu(message=message, state=state)
 
 
 @router.message(AddApplication.contacts)
@@ -246,18 +246,61 @@ async def send_contacts(message: Message, state: FSMContext):
         )
 
     await state.update_data(contacts=message.text)
+    await switchers.switch_to_send_location_menu(message=message, state=state)
+
+
+@router.message(AddApplication.location, F.text == buttons.back)
+async def back_to_contacts_menu(message: Message, state: FSMContext):
+    """
+    Handle press of "Back" button at the stage of sending location.
+
+    :param message: Message from user
+    :param state: FSM
+    """
+    await switchers.switch_to_send_contacts_menu(message=message, state=state)
+
+
+@router.message(AddApplication.location, F.text == buttons.skip)
+async def skip_entering_location(message: Message, state: FSMContext):
+    """
+    Handle press of "Skip" button at the stage of sending location.
+
+    :param message: Message from user
+    :param state: FSM
+    """
+    await state.update_data(location=None)
+    await switchers.switch_to_send_applied_date_menu(message=message, state=state)
+
+
+@router.message(AddApplication.location)
+async def send_location(message: Message, state: FSMContext):
+    """
+    Handle location from user.
+
+    :param message: Message from user
+    :param state: FSM
+    :returns: None
+    """
+    if len(message.text) > bot_settings.location_max_length:
+        return await message.reply(
+            text=messages.YOUR_MESSAGE_IS_TOO_LONG.format(
+                max_length=bot_settings.location_max_length,
+            ),
+        )
+
+    await state.update_data(location=message.text)
     await switchers.switch_to_send_applied_date_menu(message=message, state=state)
 
 
 @router.message(AddApplication.applied_date, F.text == buttons.back)
-async def back_to_contacts_menu(message: Message, state: FSMContext):
+async def back_to_location_menu(message: Message, state: FSMContext):
     """
     Handle press of "Back" button at the stage of sending applied date.
 
     :param message: Message from user
     :param state: FSM
     """
-    await switchers.switch_to_send_contacts_menu(message=message, state=state)
+    await switchers.switch_to_send_location_menu(message=message, state=state)
 
 
 @router.message(AddApplication.applied_date, F.text == buttons.today)
@@ -314,6 +357,7 @@ async def process_application_data(  # noqa: WPS217
         salary=state_data['salary'],
         job_description=state_data['job_description'],
         contacts=state_data['contacts'],
+        location=state_data['location'],
         applied_date=applied_date,
     )
 

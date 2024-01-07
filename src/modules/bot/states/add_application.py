@@ -10,4 +10,5 @@ class AddApplication(StatesGroup):
     salary = State()
     job_description = State()
     contacts = State()
+    location = State()
     applied_date = State()

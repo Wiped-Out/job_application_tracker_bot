@@ -20,6 +20,8 @@ SEND_JOB_DESCRIPTION = 'Send job description'
 
 SEND_CONTACTS = 'Send contacts'
 
+SEND_LOCATION = 'Send location'
+
 SEND_APPLIED_DATE = """
 Send applied date.
 

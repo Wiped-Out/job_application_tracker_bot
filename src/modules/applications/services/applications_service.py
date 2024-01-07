@@ -19,6 +19,7 @@ class ApplicationsService(DatabaseService):
             salary: str | None,
             job_description: str | None,
             contacts: str | None,
+            location: str,
             applied_date: date,
     ):
         """
@@ -31,6 +32,7 @@ class ApplicationsService(DatabaseService):
         :param salary: Salary
         :param job_description: Job description
         :param contacts: Contacts of recruiter
+        :param location: Job location
         :param applied_date: Applied date
         """
         await self._add(
@@ -40,6 +42,7 @@ class ApplicationsService(DatabaseService):
             salary=salary,
             job_description=job_description,
             contacts=contacts,
+            location=location,
             applied_date=applied_date,
             user_id=user_id,
         )

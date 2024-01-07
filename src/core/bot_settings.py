@@ -12,6 +12,7 @@ class BotSettings(BaseSettings):
     salary_max_length: int = 64
     job_description_max_length: int = 1024
     contacts_max_length: int = 128
+    location_max_length: int = 64
 
     model_config = SettingsConfigDict(env_prefix='BOT_', extra='allow')
 
