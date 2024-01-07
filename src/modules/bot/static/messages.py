@@ -35,3 +35,5 @@ INCORRECT_INPUT = "You're entering incorrect data"
 YOUR_MESSAGE_IS_TOO_LONG = 'Your message is too long. Max length is {max_length} symbols'
 
 APPLICATION_SAVED = 'Application saved!'
+
+JOB_APPLICATIONS_MENU = "You're in applications menu"

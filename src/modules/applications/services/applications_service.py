@@ -1,7 +1,6 @@
 from datetime import date
 
 from db.postgres import DatabaseService
-from enums import OnConflict
 from modules.applications.models.application import ApplicationModel
 
 
@@ -47,31 +46,11 @@ class ApplicationsService(DatabaseService):
             user_id=user_id,
         )
 
-    async def add_user(  # noqa: WPS211
-            self,
-            telegram_id: int,
-            first_name: str,
-            last_name: str | None,
-            username: str | None,
-            language_code: str,
-    ):
+    async def get_applications_for_user(self, user_id: int) -> list[ApplicationModel]:
         """
-        Add user to database.
+        Get applications for user.
 
-        If user exists, updates data like first name, last name etc.
-
-        :param telegram_id: Telegram ID of user
-        :param first_name: User's first name
-        :param last_name: User's last name
-        :param username: User's username
-        :param language_code: Language code of the user application
+        :param user_id: ID of user
+        :returns: list of applications
         """
-        await self._add(
-            index_elements=['telegram_id'],
-            on_conflict=OnConflict.do_update,
-            telegram_id=telegram_id,
-            first_name=first_name,
-            last_name=last_name,
-            username=username,
-            language_code=language_code,
-        )
+        return await self._get_all(self.model.user_id == user_id)
