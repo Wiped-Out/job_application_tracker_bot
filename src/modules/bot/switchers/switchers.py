@@ -1,6 +1,9 @@
 from aiogram.fsm.context import FSMContext
-from aiogram.types import Message
+from aiogram.types import CallbackQuery, Message
 
+from db.postgres import get_async_sessionmaker
+from modules.applications.services.applications_service import \
+    ApplicationsService
 from modules.bot.keyboards import keyboards
 from modules.bot.states.add_application import AddApplication
 from modules.bot.states.main_menu import MainMenu
@@ -126,3 +129,30 @@ async def switch_to_send_applied_date_menu(message: Message, state: FSMContext):
         text=messages.SEND_APPLIED_DATE,
         reply_markup=keyboards.back_and_today_kb,
     )
+
+
+async def switch_to_applications_menu(
+        message_or_query: Message | CallbackQuery,
+        page: int = 1,
+):
+    """
+    Switch user to job applications menu.
+
+    :param message_or_query: Message or CallbackQuery from user
+    :param page: Page
+    """
+    applications_service = ApplicationsService(async_session=await get_async_sessionmaker())
+    applications = await applications_service.get_applications_for_user(
+        user_id=message_or_query.from_user.id,
+    )
+
+    if isinstance(message_or_query, Message):
+        await message_or_query.answer(
+            text=messages.JOB_APPLICATIONS_MENU,
+            reply_markup=keyboards.applications_kb(applications=applications, page=page),
+        )
+    else:
+        await message_or_query.message.edit_text(
+            text=messages.JOB_APPLICATIONS_MENU,
+            reply_markup=keyboards.applications_kb(applications=applications, page=page),
+        )

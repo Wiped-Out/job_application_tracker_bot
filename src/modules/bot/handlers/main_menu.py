@@ -3,7 +3,7 @@ from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
 
 from modules.bot.states.main_menu import MainMenu
-from modules.bot.static import buttons, messages
+from modules.bot.static import buttons
 from modules.bot.switchers import switchers
 
 router = Router()
@@ -16,8 +16,7 @@ async def my_applications_menu(message: Message):
 
     :param message: Message from user
     """
-    # todo continue development
-    await message.answer(text=messages.IN_DEVELOPMENT)
+    await switchers.switch_to_applications_menu(message_or_query=message)
 
 
 @router.message(MainMenu.main_menu, F.text == buttons.new_application)
