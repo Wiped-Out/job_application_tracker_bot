@@ -16,6 +16,7 @@ class ApplicationModel(ModelBase):
     job_position: Mapped[str] = mapped_column(nullable=False)
     vacancy_url: Mapped[str] = mapped_column(nullable=True)
     company_name: Mapped[str] = mapped_column(nullable=False)
+    location: Mapped[str] = mapped_column(nullable=True)
     salary: Mapped[str] = mapped_column(nullable=True)
     job_description: Mapped[str] = mapped_column(nullable=True)
     contacts: Mapped[str] = mapped_column(nullable=True)

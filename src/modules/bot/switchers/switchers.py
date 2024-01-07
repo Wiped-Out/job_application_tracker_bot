@@ -100,6 +100,20 @@ async def switch_to_send_contacts_menu(message: Message, state: FSMContext):
     )
 
 
+async def switch_to_send_location_menu(message: Message, state: FSMContext):
+    """
+    Switch user to sending location of job.
+
+    :param message: Message from user
+    :param state: FSM
+    """
+    await state.set_state(AddApplication.location)
+    await message.answer(
+        text=messages.SEND_LOCATION,
+        reply_markup=keyboards.back_and_skip_kb,
+    )
+
+
 async def switch_to_send_applied_date_menu(message: Message, state: FSMContext):
     """
     Switch user to sending applied date.
