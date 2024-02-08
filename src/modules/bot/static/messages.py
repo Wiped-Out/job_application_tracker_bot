@@ -4,7 +4,11 @@ Welcome! The bot will help you track responses to job postings and remind you to
 In general, the bot will be your great partner in your job search 😊
 """
 
-MAIN_MENU = "You're in main menu"
+MAIN_MENU = """
+You're in main menu
+
+You've made <b>{applications_count_made_today} applications</b> today
+"""
 
 IN_DEVELOPMENT = 'This menu is in development'
 
@@ -37,3 +41,7 @@ YOUR_MESSAGE_IS_TOO_LONG = 'Your message is too long. Max length is {max_length}
 APPLICATION_SAVED = 'Application saved!'
 
 JOB_APPLICATIONS_MENU = "You're in applications menu"
+
+STATISTIC = """
+You've made <b>{applications_count_made_today} applications</b> today
+"""

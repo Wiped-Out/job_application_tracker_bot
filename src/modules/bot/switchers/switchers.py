@@ -25,10 +25,22 @@ async def switch_to_main_menu(
     :param is_from_start_menu: Is function called from /start command
     """
     await state.set_state(MainMenu.main_menu)
-    await message.answer(
-        text=messages.START_MESSAGE if is_from_start_menu else messages.MAIN_MENU,
-        reply_markup=keyboards.main_menu_kb,
-    )
+
+    if is_from_start_menu:
+        await message.answer(
+            text=messages.START_MESSAGE,
+            reply_markup=keyboards.main_menu_kb,
+        )
+    else:
+        applications_service = ApplicationsService(async_session=await get_async_sessionmaker())
+        await message.answer(
+            text=messages.MAIN_MENU.format(
+                applications_count_made_today=await applications_service.get_applications_count_made_today(  # noqa: E501
+                    user_id=message.from_user.id,
+                ),
+            ),
+            reply_markup=keyboards.main_menu_kb,
+        )
 
 
 async def switch_to_sending_job_position_menu(message: Message, state: FSMContext):
