@@ -67,7 +67,7 @@ def applications_kb(
         previous_page = page - 1
 
     for application in applications[(page - 1) * count_on_page: page * count_on_page]:
-        builder.add(
+        builder.row(
             InlineKeyboardButton(
                 text=application.job_position,
                 callback_data=f'{callback_data.application_prefix}:{application.id}',
