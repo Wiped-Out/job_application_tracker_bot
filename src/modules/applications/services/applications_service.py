@@ -1,4 +1,6 @@
-from datetime import date
+from datetime import date, datetime, timedelta
+
+from sqlalchemy import and_
 
 from db.postgres import DatabaseService
 from modules.applications.models.application import ApplicationModel
@@ -54,3 +56,21 @@ class ApplicationsService(DatabaseService):
         :returns: list of applications
         """
         return await self._get_all(self.model.user_id == user_id)
+
+    async def get_applications_count_made_today(self, user_id: int) -> int:
+        """
+        Get user's applications count made today.
+
+        :param user_id: ID of user
+
+        :returns: applications count made today
+        """
+        now = datetime.now()
+        now = now.replace(hour=0, minute=0, second=0, microsecond=0)
+        return await self._count(
+            self.model.user_id == user_id,
+            and_(
+                self.model.created_at >= now,
+                self.model.created_at <= now + timedelta(days=1),
+            ),
+        )
